@@ -78,7 +78,7 @@ cd ibiri
 yarn install
 cp .env.example .env
 # Edit .env with your configuration
-nx serve web
+nx dev web
 nx run mobile:start
 nx serve api
 ```
@@ -161,7 +161,7 @@ To start the development servers:
 1. For the web application:
 
    ```bash
-   nx serve web
+   nx dev web
    ```
 
 2. For the mobile application:
