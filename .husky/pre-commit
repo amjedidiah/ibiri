@@ -1,0 +1,2 @@
+nx build web
+nx build credit-scoring
