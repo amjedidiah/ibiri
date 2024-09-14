@@ -17,6 +17,7 @@ export async function POST(request: NextRequest) {
       firstName,
       lastName,
     });
+    
     if (validationError) {
       return NextResponse.json({ error: validationError }, { status: 400 });
     }
