@@ -1,7 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import { getDb } from '../../../lib/db';
-import { User, validateUser } from '../../models/User';
+import {
+  BankAccount,
+  CreditScore,
+  User,
+  validateUser,
+} from '../../models/User';
+import { generateUniqueAccountNumber } from '../../../utils/accountNumber';
 
 export async function POST(request: NextRequest) {
   try {
@@ -17,7 +23,7 @@ export async function POST(request: NextRequest) {
       firstName,
       lastName,
     });
-    
+
     if (validationError) {
       return NextResponse.json({ error: validationError }, { status: 400 });
     }
@@ -35,6 +41,23 @@ export async function POST(request: NextRequest) {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
+    // Create default credit score
+    const defaultCreditScore: CreditScore = {
+      score: 300,
+      date: new Date(),
+      range: { min: 300, max: 850 },
+      factors: [],
+      source: 'Experian',
+    };
+
+    // Create default bank account
+    const defaultBankAccount: BankAccount = {
+      accountNumber: generateUniqueAccountNumber(),
+      name: `${firstName} ${lastName}`,
+      type: 'checking',
+      balance: 0,
+    };
+
     // Create user object
     const newUser: User = {
       email,
@@ -43,6 +66,8 @@ export async function POST(request: NextRequest) {
       lastName,
       createdAt: new Date(),
       updatedAt: new Date(),
+      creditScore: [defaultCreditScore],
+      bankAccount: [defaultBankAccount],
     };
 
     // Insert user into database
@@ -56,6 +81,8 @@ export async function POST(request: NextRequest) {
       lastName: newUser.lastName,
       createdAt: newUser.createdAt,
       updatedAt: newUser.updatedAt,
+      creditScore: newUser.creditScore,
+      bankAccount: newUser.bankAccount,
     };
 
     return NextResponse.json(
