@@ -1,11 +1,14 @@
 'use client';
 import React, { createContext, useState, useContext, useEffect } from 'react';
+import { BankAccount, CreditScore } from '../app/models/User';
 
 interface User {
   id: string;
   email: string;
   firstName: string;
   lastName: string;
+  bankAccount: BankAccount[];
+  creditScore: CreditScore[];
 }
 
 interface AuthContextType {
