@@ -12,6 +12,9 @@ const nextConfig = {
     // See: https://github.com/gregberge/svgr
     svgr: false,
   },
+  env: {
+    JWT_SECRET: process.env.JWT_SECRET,
+  },
 };
 
 const plugins = [

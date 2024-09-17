@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import { getDb } from '../../../lib/db';
 import { User } from '../../models/User';
+import jwt from 'jsonwebtoken';
 
 export async function POST(request: NextRequest) {
   try {
@@ -20,25 +21,40 @@ export async function POST(request: NextRequest) {
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
+
+    if (isMatch) {
+      const jwtSecret = process.env.JWT_SECRET;
+      if (!jwtSecret) {
+        throw new Error('JWT Secret is not defined');
+      }
+
+      const token = jwt.sign(
+        { userId: user._id, email: user.email },
+        jwtSecret,
+        { expiresIn: '1h' }
+      );
+
+      return NextResponse.json(
+        {
+          message: 'Login successful',
+          token,
+          user: {
+            id: user._id,
+            email: user.email,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            creditScore: user.creditScore,
+            bankAccount: user.bankAccount,
+          },
+        },
+        { status: 200 }
+      );
+    } else {
       return NextResponse.json(
         { error: 'Incorrect Password' },
         { status: 400 }
       );
     }
-
-    return NextResponse.json(
-      {
-        message: 'Login successful',
-        user: {
-          id: user._id,
-          email: user.email,
-          firstName: user.firstName,
-          lastName: user.lastName,
-        },
-      },
-      { status: 200 }
-    );
   } catch (error) {
     console.error('Login error:', error);
     return NextResponse.json(

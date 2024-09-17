@@ -1,20 +1,13 @@
 'use client';
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import { BankAccount, CreditScore } from '../app/models/User';
-
-interface User {
-  id: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-  bankAccount: BankAccount[];
-  creditScore: CreditScore[];
-}
+import { getCurrentUser, logout as apiLogout } from '../utils/api';
+import { User } from '../app/models/User';
 
 interface AuthContextType {
   user: User | null;
+  setUser: (user: User | null) => void;
   loading: boolean;
-  login: (user: User) => void;
+  loginContext: (user: User) => void;
   logout: () => void;
 }
 
@@ -27,26 +20,33 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check if user is logged in
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
-    setLoading(false);
+    const loadUser = async () => {
+      try {
+        const currentUser = await getCurrentUser();
+        setUser(currentUser);
+      } catch (error) {
+        console.error('Error loading user:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadUser();
   }, []);
 
-  const login = (userData: User) => {
+  const loginContext = (userData: User) => {
     setUser(userData);
-    localStorage.setItem('user', JSON.stringify(userData));
   };
 
   const logout = () => {
     setUser(null);
-    localStorage.removeItem('user');
+    apiLogout();
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout }}>
+    <AuthContext.Provider
+      value={{ user, setUser, loading, loginContext, logout }}
+    >
       {children}
     </AuthContext.Provider>
   );
