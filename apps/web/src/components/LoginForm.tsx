@@ -6,34 +6,26 @@ import Link from 'next/link';
 import { IbiriLogo } from '../assets/images';
 import Image from 'next/image';
 import { useAuth } from '../context/AuthContext';
+import { login } from '../utils/api';
 
 export default function LoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const router = useRouter();
-  const { login } = useAuth();
+  const { loginContext } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
 
-    const response = await fetch('/api/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password }),
-    });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      setError(data.error || 'Something went wrong');
-      return;
+    try {
+      const user = await login(email, password);
+      loginContext(user);
+      router.push('/');
+    } catch (error) {
+      setError(error instanceof Error ? error.message : 'An unknown error occurred');
     }
-
-    // Login Success
-    login(data.user);
-    router.push('/');
   };
 
   return (
