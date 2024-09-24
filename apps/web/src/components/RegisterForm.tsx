@@ -14,7 +14,7 @@ export default function RegisterForm() {
   const [lastName, setLastName] = useState('');
   const [error, setError] = useState('');
   const router = useRouter();
-  const { login } = useAuth();
+  const { loginContext } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,7 +34,7 @@ export default function RegisterForm() {
     }
 
     // Registration Success
-    login(data.user);
+    loginContext(data.user);
     router.push('/');
   };
 

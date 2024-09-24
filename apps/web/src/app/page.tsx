@@ -23,7 +23,6 @@ const Home = () => {
       if (response.ok) {
         const updatedUser = await response.json();
         setUser(updatedUser);
-        
       } else {
         console.error('Failed to refresh user data');
       }

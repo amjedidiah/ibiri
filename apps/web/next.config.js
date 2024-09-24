@@ -14,6 +14,8 @@ const nextConfig = {
   },
   env: {
     JWT_SECRET: process.env.JWT_SECRET,
+    KORA_PUBLIC_KEY: process.env.KORA_PUBLIC_KEY,
+    KORA_SECRET_KEY: process.env.KORA_SECRET_KEY,
   },
 };
 
