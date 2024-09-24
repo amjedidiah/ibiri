@@ -49,3 +49,5 @@ out
 .env
 .env.local
 .env.prod
+
+yarn.lock
