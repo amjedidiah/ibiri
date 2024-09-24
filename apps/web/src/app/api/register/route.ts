@@ -1,13 +1,22 @@
 import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
-import { getDb } from '../../../lib/db';
 import {
-  BankAccount,
-  CreditScore,
-  User,
+  type BankAccount,
+  type CreditScore,
+  getDb,
+  type User,
   validateUser,
-} from '../../models/User';
-import { generateUniqueAccountNumber } from '../../../utils/accountNumber';
+} from '@ibiri/db';
+import { generateUniqueAccountNumber } from '@ibiri/utils';
+
+// Create default credit score
+const defaultCreditScore: CreditScore = {
+  score: 300,
+  date: new Date(),
+  range: { min: 300, max: 850 },
+  factors: [],
+  source: 'Experian',
+};
 
 export async function POST(request: NextRequest) {
   try {
@@ -40,15 +49,6 @@ export async function POST(request: NextRequest) {
     // Hash password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
-
-    // Create default credit score
-    const defaultCreditScore: CreditScore = {
-      score: 300,
-      date: new Date(),
-      range: { min: 300, max: 850 },
-      factors: [],
-      source: 'Experian',
-    };
 
     // Create default bank account
     const defaultBankAccount: BankAccount = {

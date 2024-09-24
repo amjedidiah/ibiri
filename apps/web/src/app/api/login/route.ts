@@ -1,8 +1,7 @@
 // Login API
 import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
-import { getDb } from '../../../lib/db';
-import { User } from '../../models/User';
+import { getDb, User } from '@ibiri/db';
 
 export async function POST(request: NextRequest) {
   try {

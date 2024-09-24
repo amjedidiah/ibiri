@@ -1,6 +1,6 @@
 'use client';
+import { BankAccount, CreditScore } from '@ibiri/db';
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import { BankAccount, CreditScore } from '../app/models/User';
 
 interface User {
   id: string;
