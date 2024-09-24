@@ -1,5 +1,5 @@
 import { Db } from 'mongodb';
-import clientPromise from './mongodb';
+import clientPromise from './lib/mongodb';
 
 let db: Db | null = null;
 
@@ -10,7 +10,7 @@ export async function getDb(): Promise<Db> {
 
   try {
     const client = await clientPromise;
-    db = client.db(process.env.NEXT_PUBLIC_MONGODB_DB_NAME);
+    db = client.db(process.env['MONGODB_DB_NAME']);
     return db;
   } catch (error) {
     console.error('Failed to connect to the database', error);

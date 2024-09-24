@@ -1,12 +1,12 @@
 import { MongoClient, ServerApiVersion } from 'mongodb';
 
-if (!process.env.NEXT_PUBLIC_MONGODB_URI) {
+if (!process.env['NEXT_PUBLIC_MONGODB_URI']) {
   throw new Error(
     'Invalid/Missing environment variable: "NEXT_PUBLIC_MONGODB_URI"'
   );
 }
 
-const uri = process.env.NEXT_PUBLIC_MONGODB_URI;
+const uri = process.env['NEXT_PUBLIC_MONGODB_URI'];
 const options = {
   serverApi: {
     version: ServerApiVersion.v1,
@@ -18,7 +18,7 @@ const options = {
 let client;
 let clientPromise: Promise<MongoClient>;
 
-if (process.env.NODE_ENV === 'development') {
+if (process.env['NODE_ENV'] === 'development') {
   const globalWithMongo = global as typeof globalThis & {
     _mongoClientPromise?: Promise<MongoClient>;
   };
