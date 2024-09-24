@@ -1,4 +1,5 @@
 'use client';
+import { BankAccount, CreditScore } from '@ibiri/db';
 import React, { createContext, useState, useContext, useEffect } from 'react';
 
 interface User {
@@ -6,6 +7,8 @@ interface User {
   email: string;
   firstName: string;
   lastName: string;
+  bankAccount: BankAccount[];
+  creditScore: CreditScore[];
 }
 
 interface AuthContextType {

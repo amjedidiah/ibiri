@@ -17,7 +17,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@ibiri/credit-scoring": ["libs/credit-scoring/src/index.ts"],
+      "@ibiri/utils": ["libs/utils/src/index.ts"],
       "@ibiri/db": ["libs/db/src/index.ts"]
     }
   },

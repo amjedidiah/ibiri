@@ -21,6 +21,23 @@ const Home = () => {
       >
         Log Out
       </button>
+      <h2 className="text-2xl font-bold mt-5">Your Account Details:</h2>
+      {user && user.bankAccount && user.bankAccount[0] && (
+        <div className="mt-4">
+          <p className="text-lg">
+            <span className="font-semibold">Account Number:</span>{' '}
+            {user.bankAccount[0].accountNumber}
+          </p>
+        </div>
+      )}
+      {user && user.creditScore && user.creditScore[0] && (
+        <div className="mt-2">
+          <p className="text-lg">
+            <span className="font-semibold">Credit Score:</span>{' '}
+            {user.creditScore[0].score}
+          </p>
+        </div>
+      )}
     </div>
   );
 };
