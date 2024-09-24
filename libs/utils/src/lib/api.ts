@@ -1,5 +1,5 @@
+import { User } from '@ibiri/db';
 import Cookies from 'js-cookie';
-import { User } from '../app/models/User';
 
 const login = async (email: string, password: string): Promise<User> => {
   const response = await fetch('/api/login', {
@@ -15,7 +15,7 @@ const login = async (email: string, password: string): Promise<User> => {
   } else {
     Cookies.set('token', data.token, {
       expires: 7,
-      secure: process.env.NODE_ENV === 'production',
+      secure: process.env['NODE_ENV'] === 'production',
       sameSite: 'strict',
     });
     return data.user;

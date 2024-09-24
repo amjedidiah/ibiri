@@ -1,5 +1,5 @@
+import { getDb } from '@ibiri/db';
 import { NextRequest, NextResponse } from 'next/server';
-import { getDb } from '../../../lib/db';
 
 // Define transfer request body
 interface TransferRequest {
@@ -11,13 +11,20 @@ interface TransferRequest {
 export async function POST(request: NextRequest) {
   try {
     const db = await getDb();
-    
+
     // Parse the request body
-    const { senderAccountNumber, recipientAccountNumber, amount }: TransferRequest = await request.json();
-    
+    const {
+      senderAccountNumber,
+      recipientAccountNumber,
+      amount,
+    }: TransferRequest = await request.json();
+
     // Validate input
     if (!senderAccountNumber || !recipientAccountNumber || amount <= 0) {
-      return NextResponse.json({ error: 'Invalid input data' }, { status: 400 });
+      return NextResponse.json(
+        { error: 'Invalid input data' },
+        { status: 400 }
+      );
     }
 
     // Fetch sender and recipient users
@@ -30,19 +37,27 @@ export async function POST(request: NextRequest) {
     });
 
     if (!senderUser) {
-      return NextResponse.json({ error: 'Sender account not found' }, { status: 404 });
+      return NextResponse.json(
+        { error: 'Sender account not found' },
+        { status: 404 }
+      );
     }
 
     if (!recipientUser) {
-      return NextResponse.json({ error: 'Recipient account not found' }, { status: 404 });
+      return NextResponse.json(
+        { error: 'Recipient account not found' },
+        { status: 404 }
+      );
     }
 
     // Locate the specific bank accounts
     const senderAccount = senderUser.bankAccount.find(
-      (account: { accountNumber: string }) => account.accountNumber === senderAccountNumber
+      (account: { accountNumber: string }) =>
+        account.accountNumber === senderAccountNumber
     );
     const recipientAccount = recipientUser.bankAccount.find(
-      (account: { accountNumber: string }) => account.accountNumber === recipientAccountNumber
+      (account: { accountNumber: string }) =>
+        account.accountNumber === recipientAccountNumber
     );
 
     if (!senderAccount || !recipientAccount) {
@@ -51,7 +66,10 @@ export async function POST(request: NextRequest) {
 
     // Check if the sender has enough balance
     if (senderAccount.balance < amount) {
-      return NextResponse.json({ error: 'Insufficient funds' }, { status: 400 });
+      return NextResponse.json(
+        { error: 'Insufficient funds' },
+        { status: 400 }
+      );
     }
 
     // Update balances (deduct from sender, add to recipient)
@@ -59,20 +77,30 @@ export async function POST(request: NextRequest) {
     const updatedRecipientBalance = recipientAccount.balance + amount;
 
     // Update the sender's account balance in the database
-    await db.collection('users').updateOne(
-      { 'bankAccount.accountNumber': senderAccountNumber },
-      { $set: { 'bankAccount.$.balance': updatedSenderBalance } }
-    );
+    await db
+      .collection('users')
+      .updateOne(
+        { 'bankAccount.accountNumber': senderAccountNumber },
+        { $set: { 'bankAccount.$.balance': updatedSenderBalance } }
+      );
 
     // Update the recipient's account balance in the database
-    await db.collection('users').updateOne(
-      { 'bankAccount.accountNumber': recipientAccountNumber },
-      { $set: { 'bankAccount.$.balance': updatedRecipientBalance } }
-    );
+    await db
+      .collection('users')
+      .updateOne(
+        { 'bankAccount.accountNumber': recipientAccountNumber },
+        { $set: { 'bankAccount.$.balance': updatedRecipientBalance } }
+      );
 
-    return NextResponse.json({ message: 'Transfer successful' }, { status: 200 });
+    return NextResponse.json(
+      { message: 'Transfer successful' },
+      { status: 200 }
+    );
   } catch (error) {
     console.error('Transfer error:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Internal Server Error' },
+      { status: 500 }
+    );
   }
 }

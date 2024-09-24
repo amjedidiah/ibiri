@@ -1,15 +1,15 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { ObjectId } from 'mongodb';
-import { getDb } from '../../../lib/db';
 import { cookies } from 'next/headers';
 import jwt from 'jsonwebtoken';
+import { getDb } from '@ibiri/db';
 
 interface JwtPayload {
   userId: string;
   email: string;
 }
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     const db = await getDb();
     const usersCollection = db.collection('users');
@@ -29,7 +29,10 @@ export async function GET(request: NextRequest) {
       if (!process.env.JWT_SECRET) {
         throw new Error('JWT_SECRET is not defined');
       }
-      decodedToken = jwt.verify(tokenCookie, process.env.JWT_SECRET) as JwtPayload;
+      decodedToken = jwt.verify(
+        tokenCookie,
+        process.env.JWT_SECRET
+      ) as JwtPayload;
     } catch (error) {
       return NextResponse.json(
         { message: 'Invalid or expired token' },
