@@ -17,3 +17,5 @@ export async function getDb(): Promise<Db> {
     throw new Error('Failed to connect to the database');
   }
 }
+
+export * from './models/User';

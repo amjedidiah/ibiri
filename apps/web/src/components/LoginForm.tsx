@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { IbiriLogo } from '../assets/images';
 import Image from 'next/image';
 import { useAuth } from '../context/AuthContext';
 
@@ -41,7 +40,7 @@ export default function LoginForm() {
       <div className="w-full max-w-md space-y-8">
         <Image
           className="mix-blend-multiply"
-          src={IbiriLogo}
+          src="/images/ibiri-logo.webp"
           alt="Profile picture"
           width={500}
           height={500}

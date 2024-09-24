@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
-import { getDb } from '../../../lib/db';
-import { User, validateUser } from '../../models/User';
+import { getDb, User, validateUser } from '@ibiri/db';
 
 export async function POST(request: NextRequest) {
   try {
@@ -17,7 +16,7 @@ export async function POST(request: NextRequest) {
       firstName,
       lastName,
     });
-    
+
     if (validationError) {
       return NextResponse.json({ error: validationError }, { status: 400 });
     }
