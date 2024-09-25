@@ -25,7 +25,12 @@
       },
       "dependsOn": [
         "build"
-      ]
+      ],
+      "configurations": {
+        "production": {
+          "port": 3000
+        }
+      }
     }
   }
 }

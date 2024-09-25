@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useAuth } from '../context/AuthContext';
 import { login } from '@ibiri/utils';
+import { Button } from '@ibiri/components';
 
 export default function LoginForm() {
   const [email, setEmail] = useState('');
@@ -23,7 +24,9 @@ export default function LoginForm() {
       loginContext(user);
       router.push('/');
     } catch (error) {
-      setError(error instanceof Error ? error.message : 'An unknown error occurred');
+      setError(
+        error instanceof Error ? error.message : 'An unknown error occurred'
+      );
     }
   };
 
@@ -81,12 +84,12 @@ export default function LoginForm() {
           </div>
 
           <div>
-            <button
+            <Button
               type="submit"
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
               Sign in
-            </button>
+            </Button>
           </div>
         </form>
         <div className="text-sm text-center">

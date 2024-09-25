@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": ".",
+    "paths": {
+      "@ibiri/components": ["shared/components/src/index.ts"],
+      "@ibiri/components/*": ["shared/components/src/*"]
+    }
+  }
+}
