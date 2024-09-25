@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../context/AuthContext';
+import Loader from './Loader';
 
 type ComponentProps = Record<string, unknown>;
 
@@ -20,7 +21,7 @@ export function withAuth<P extends ComponentProps>(
     }, [user, loading, router]);
 
     if (loading || !user) {
-      return <div>Loading...</div>;
+      return <Loader />;
     }
 
     return <WrappedComponent {...props} />;
@@ -46,8 +47,8 @@ export function withoutAuth<P extends ComponentProps>(
       }
     }, [user, loading, router]);
 
-    if (loading || user) {
-      return <div>Loading...</div>;
+    if (!loading || user) {
+      return <Loader />;
     }
 
     return <WrappedComponent {...props} />;

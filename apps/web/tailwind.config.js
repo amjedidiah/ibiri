@@ -11,7 +11,26 @@ module.exports = {
     ...createGlobPatternsForDependencies(__dirname),
   ],
   theme: {
-    extend: {},
+    screens: {
+      xs: '390px',
+      sm: '640px',
+      md: '768px',
+      lg: '1024px',
+      chromebook: '1200px',
+      xl: '1280px',
+      '2xl': '1536px',
+      '3xl': '1921px',
+      'landscape-sm': {
+        raw: '(min-width: 600px) and (max-width: 1024px) and (min-height: 600px) and (orientation: landscape)',
+      },
+      'landscape-md': {
+        raw: '(min-width: 768px) and (max-width: 1366px) and (max-height: 700px) and (orientation: landscape)',
+      },
+    },
+    extend: {
+      colors: {
+        'primary-bg': '#3D4EE3',
+      },
+    },
   },
-  plugins: [],
 };
