@@ -1,50 +1,30 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { GradientBlob, IbiriLogo, Spinner } from '../assets/images';
+import useRegister from '../hooks/use-register';
 import Link from 'next/link';
-import { useAuth } from '../context/AuthContext';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import { toast } from 'react-toastify';
+import { useState } from 'react';
+import { IbiriLogo, Spinner } from '../assets';
 
 export default function RegisterForm() {
-  const [email, setEmail] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [password, setPassword] = useState('');
+  const {
+    loading,
+    handleSubmit,
+    firstName,
+    lastName,
+    email,
+    password,
+    setFirstName,
+    setLastName,
+    setEmail,
+    setPassword,
+  } = useRegister();
+
   const [showPassword, setShowPassword] = useState(false);
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const router = useRouter();
-  const { loginContext } = useAuth();
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-
-    const response = await fetch('/api/register', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password, firstName, lastName }),
-    });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      toast.error(data.error || 'Something went wrong');
-      setLoading(false);
-      return;
-    }
-
-    // Registration Success
-    loginContext(data.user);
-    router.push('/');
-    setLoading(false);
-  };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center px-4 md:px-9 chromebook:px-0">
+    <div className="relative flex min-h-screen flex-col items-center justify-center px-4 md:px-9 chromebook:px-0">
       <IbiriLogo fillColor="#3D4EE3" width={200} height={100} />
       <div className="w-full max-w-md space-y-8 relative z-[1] bg-white border border-gray-200 rounded-xl p-5 shadow-sm mt-5">
         <h2 className="text-center text-2xl font-extrabold text-gray-900">
@@ -145,8 +125,9 @@ export default function RegisterForm() {
       </div>
       <Image
         className="absolute bottom-0 left-0 z-0"
-        src={GradientBlob}
+        src="/images/gradientBlob.svg"
         alt="Gradient Blob"
+        fill
       />
     </div>
   );

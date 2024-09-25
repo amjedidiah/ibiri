@@ -1,14 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
-import { getDb } from '../../../lib/db';
 import {
-  BankAccount,
-  CreditScore,
-  User,
+  type BankAccount,
+  type CreditScore,
+  getDb,
+  type User,
   validateUser,
-} from '../../models/User';
+} from '@ibiri/db';
 import { randomBytes } from 'crypto';
 import jwt from 'jsonwebtoken';
+
+// Create default credit score
+const defaultCreditScore: CreditScore = {
+  score: 300,
+  date: new Date(),
+  range: { min: 300, max: 850 },
+  factors: [],
+  source: 'Experian',
+};
 
 export async function POST(request: NextRequest) {
   try {
@@ -41,48 +50,44 @@ export async function POST(request: NextRequest) {
     // Hash password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
-    
+
     const raw = JSON.stringify({
       account_name: `${firstName} ${lastName}`,
       account_reference: `IBR-${randomBytes(16).toString('hex')}`,
       permanent: true,
-      bank_code: "000",
+      bank_code: '000',
       customer: {
-        name: `${firstName} ${lastName}`
+        name: `${firstName} ${lastName}`,
       },
       kyc: {
-        bvn: "11111111111"
-      }
+        bvn: '11111111111',
+      },
     });
 
     const requestOptions = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.KORA_SECRET_KEY}`
+        Authorization: `Bearer ${process.env.KORA_SECRET_KEY}`,
       },
       body: raw,
-      redirect: 'follow' as RequestRedirect
+      redirect: 'follow' as RequestRedirect,
     };
 
-    const accountResponse = await fetch("https://api.korapay.com/merchant/api/v1/virtual-bank-account", requestOptions);
+    const accountResponse = await fetch(
+      'https://api.korapay.com/merchant/api/v1/virtual-bank-account',
+      requestOptions
+    );
     const accountData = await accountResponse.json();
 
     if (!accountResponse.ok) {
       console.error('Failed to create virtual bank account:', accountData);
-      throw new Error(accountData.error || 'Failed to create virtual bank account');
+      throw new Error(
+        accountData.error || 'Failed to create virtual bank account'
+      );
     }
 
     const accountNumber = accountData.data.account_number;
-
-    // Create default credit score
-    const defaultCreditScore: CreditScore = {
-      score: 300,
-      date: new Date(),
-      range: { min: 300, max: 850 },
-      factors: [],
-      source: 'Experian',
-    };
 
     // Create default bank account
     const defaultBankAccount: BankAccount = {
@@ -120,7 +125,7 @@ export async function POST(request: NextRequest) {
     };
 
     const jwtSecret = process.env.JWT_SECRET;
-    
+
     if (!jwtSecret) {
       throw new Error('JWT_SECRET is not defined');
     }
@@ -132,7 +137,10 @@ export async function POST(request: NextRequest) {
     );
 
     // Set HttpOnly cookie for the token
-    const response = NextResponse.json({ message: 'User registered successfully', user: safeUser });
+    const response = NextResponse.json({
+      message: 'User registered successfully',
+      user: safeUser,
+    });
     response.cookies.set('token', token, {
       // httpOnly: true,
       // secure: process.env.NODE_ENV === 'production',

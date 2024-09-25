@@ -1,6 +1,6 @@
 import React from 'react';
 import Lottie from 'react-lottie-player';
-import { LoaderAnim } from '../assets/images';
+import { LoaderAnim } from '../assets';
 
 const Loader = () => {
   return (

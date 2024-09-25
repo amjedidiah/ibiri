@@ -1,42 +1,26 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { GradientBlob, IbiriLogo, Spinner } from '../assets/images';
 import Image from 'next/image';
-import { useAuth } from '../context/AuthContext';
-import { login } from '../utils/api';
-import { toast } from 'react-toastify';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { IbiriLogo, Spinner } from '../assets';
+import useLogin from '../hooks/use-login';
 
 export default function LoginForm() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
+  const {
+    loading,
+    handleSubmit,
+    email,
+    password,
+    setEmail,
+    setPassword,
+  } = useLogin();
+
   const [showPassword, setShowPassword] = useState(false);
-  const router = useRouter();
-  const { loginContext } = useAuth();
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-
-    try {
-      const user = await login(email, password);
-      loginContext(user);
-      router.push('/');
-    } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : 'An unknown error occurred';
-      toast.error(errorMessage);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-white px-4 md:px-9 chromebook:px-0">
+    <div className="relative flex min-h-screen flex-col items-center justify-center bg-white px-4 md:px-9 chromebook:px-0">
       <IbiriLogo fillColor="#3D4EE3" width={200} height={100} />
       <div className="w-full max-w-md space-y-8 relative z-[1] bg-white border border-gray-200 rounded-xl p-5 shadow-sm mt-5">
         <h2 className="text-center text-2xl font-extrabold text-gray-900">
@@ -106,8 +90,9 @@ export default function LoginForm() {
       </div>
       <Image
         className="absolute bottom-0 left-0 z-0"
-        src={GradientBlob}
+        src="/images/gradientBlob.svg"
         alt="Gradient Blob"
+        fill
       />
     </div>
   );

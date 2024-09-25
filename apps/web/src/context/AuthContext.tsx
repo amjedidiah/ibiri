@@ -1,7 +1,7 @@
 'use client';
+import { User } from '@ibiri/db';
+import { getCurrentUser, logout as apiLogout } from '@ibiri/utils';
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import { getCurrentUser, logout as apiLogout } from '../utils/api';
-import { User } from '../app/models/User';
 
 interface AuthContextType {
   user: User | null;

@@ -31,7 +31,7 @@ export function withAuth<P extends ComponentProps>(
     WrappedComponent.displayName || WrappedComponent.name || 'Component'
   })`;
 
-  return AuthComponent;
+  return AuthComponent as any;
 }
 
 export function withoutAuth<P extends ComponentProps>(
@@ -47,7 +47,7 @@ export function withoutAuth<P extends ComponentProps>(
       }
     }, [user, loading, router]);
 
-    if (!loading || user) {
+    if (loading || user) {
       return <Loader />;
     }
 
@@ -58,5 +58,5 @@ export function withoutAuth<P extends ComponentProps>(
     WrappedComponent.displayName || WrappedComponent.name || 'Component'
   })`;
 
-  return NoAuthComponent;
+  return NoAuthComponent as any;
 }
