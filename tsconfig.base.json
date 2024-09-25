@@ -17,8 +17,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@ibiri/utils": ["libs/utils/src/index.ts"],
-      "@ibiri/db": ["libs/db/src/index.ts"]
+      "@ibiri/utils": ["shared/utils/src/index.ts"],
+      "@ibiri/db": ["shared/db/src/index.ts"],
     }
   },
   "exclude": ["node_modules", "tmp"]

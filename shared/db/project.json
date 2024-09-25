@@ -1,7 +1,7 @@
 {
   "name": "db",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/db/src",
+  "sourceRoot": "shared/db/src",
   "projectType": "library",
   "tags": [],
   "targets": {
@@ -9,10 +9,12 @@
       "executor": "@nx/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/libs/db",
-        "main": "libs/db/src/index.ts",
-        "tsConfig": "libs/db/tsconfig.lib.json",
-        "assets": ["libs/db/*.md"]
+        "outputPath": "dist/shared/db",
+        "main": "shared/db/src/index.ts",
+        "tsConfig": "shared/db/tsconfig.lib.json",
+        "assets": [
+          "shared/db/*.md"
+        ]
       }
     }
   }
