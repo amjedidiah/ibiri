@@ -1,5 +1,15 @@
 # Todo
 
+## Changes
+
+- [ ] Make Signup go through even without virtual bank account creation
+- [ ] Setup webhook
+- [ ] Account top-up: bank transfer
+- [ ] Account top-up: credit virtual account
+- [ ] Shadcn setup
+- [ ] UI
+- [ ] Bill payment
+
 ## Improvements
 
 - Implement `next-auth`
