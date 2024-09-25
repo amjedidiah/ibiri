@@ -1,7 +1,7 @@
 {
   "name": "utils",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/utils/src",
+  "sourceRoot": "shared/utils/src",
   "projectType": "library",
   "tags": [],
   "targets": {
@@ -11,11 +11,11 @@
         "{options.outputPath}"
       ],
       "options": {
-        "outputPath": "dist/libs/utils",
-        "main": "libs/utils/src/index.ts",
-        "tsConfig": "libs/utils/tsconfig.lib.json",
+        "outputPath": "dist/shared/utils",
+        "main": "shared/utils/src/index.ts",
+        "tsConfig": "shared/utils/tsconfig.lib.json",
         "assets": [
-          "libs/utils/*.md"
+          "shared/utils/*.md"
         ]
       }
     }

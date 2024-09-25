@@ -3,19 +3,14 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { Button } from '@ibiri/components';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { IbiriLogo, Spinner } from '../assets';
 import useLogin from '../hooks/use-login';
 
 export default function LoginForm() {
-  const {
-    loading,
-    handleSubmit,
-    email,
-    password,
-    setEmail,
-    setPassword,
-  } = useLogin();
+  const { loading, handleSubmit, email, password, setEmail, setPassword } =
+    useLogin();
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -69,13 +64,13 @@ export default function LoginForm() {
             </div>
           </div>
           <div>
-            <button
+            <Button
               type="submit"
               className="group relative w-full h-12 flex items-center justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary-bg hover:opacity-95 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               disabled={loading}
             >
               {loading ? <Spinner /> : 'Sign in'}
-            </button>
+            </Button>
           </div>
         </form>
         <div className="text-sm text-center">
