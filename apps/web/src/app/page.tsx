@@ -10,7 +10,7 @@ const Home = () => {
   const [amount, setAmount] = useState('');
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
-
+  
   const refreshUserData = useCallback(async () => {
     try {
       const response = await fetch('/api/user', {
