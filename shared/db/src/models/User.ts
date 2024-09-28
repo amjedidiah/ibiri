@@ -28,6 +28,8 @@ export interface User {
   bankAccount: BankAccount[];
   createdAt: Date;
   updatedAt: Date;
+  pin?: string;
+  hasPin: boolean;
 }
 export function validateUser(
   user: Pick<User, 'email' | 'password' | 'firstName' | 'lastName'>

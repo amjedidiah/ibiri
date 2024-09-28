@@ -1,7 +1,6 @@
 'use client';
 
-import LoginForm from '../../components/LoginForm';
-import { withoutAuth } from '../../components/withAuth';
+import { LoginForm, withoutAuth } from '../../components';
 
 const Login = () => {
   return <LoginForm />;

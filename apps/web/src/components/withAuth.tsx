@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../context/AuthContext';
-import Loader from './Loader';
+import {Loader } from './';
 
 type ComponentProps = Record<string, unknown>;
 
