@@ -15,8 +15,5 @@
     "snyk-security.snyk-vulnerability-scanner",
     "maxvanderschee.web-accessibility",
     "webhint.vscode-webhint"
-
-
-
   ]
 }

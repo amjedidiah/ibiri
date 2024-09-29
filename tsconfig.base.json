@@ -17,7 +17,9 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@ibiri/credit-scoring": ["libs/credit-scoring/src/index.ts"]
+      "@ibiri/components": ["shared/components/src/index.ts"],
+      "@ibiri/db": ["shared/db/src/index.ts"],
+      "@ibiri/utils": ["shared/utils/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

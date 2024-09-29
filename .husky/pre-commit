@@ -1,2 +1,4 @@
 nx build web
-nx build credit-scoring
+nx build utils
+nx build db
+nx build components
