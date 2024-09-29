@@ -1,0 +1,8 @@
+{
+  "builds": [
+    {
+      "src": "dist/apps/web/next.config.js",
+      "use": "@vercel/next"
+    }
+  ]
+}
