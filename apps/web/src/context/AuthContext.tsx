@@ -1,7 +1,7 @@
 'use client';
 import { User } from '@ibiri/db';
 import { getCurrentUser, logout as apiLogout } from '@ibiri/utils';
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import React, { createContext, useState, useContext, useEffect, useCallback } from 'react';
 
 interface AuthContextType {
   user: User | null;
@@ -9,6 +9,8 @@ interface AuthContextType {
   loading: boolean;
   loginContext: (user: User) => void;
   logout: () => void;
+  refreshUserData: () => Promise<void>;
+  updateUser: (updatedUser: Partial<User>) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -18,6 +20,26 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+
+  const refreshUserData = useCallback(async () => {
+    try {
+      const response = await fetch('/api/user', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        const updatedUser = await response.json();
+        setUser(updatedUser);
+      } else {
+        console.error('Failed to refresh user data');
+      }
+    } catch (error) {
+      console.error('Error refreshing user data:', error);
+    }
+  }, []);
 
   useEffect(() => {
     const loadUser = async () => {
@@ -43,9 +65,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     apiLogout();
   };
 
+  const updateUser = (updatedUser: Partial<User>) => {
+    setUser(prevUser => prevUser ? ({ ...prevUser, ...updatedUser } as User) : null);
+  };
+
   return (
     <AuthContext.Provider
-      value={{ user, setUser, loading, loginContext, logout }}
+      value={{ user, setUser, updateUser, loading, loginContext, logout, refreshUserData }}
     >
       {children}
     </AuthContext.Provider>

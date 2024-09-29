@@ -107,6 +107,7 @@ export async function POST(request: NextRequest) {
       updatedAt: new Date(),
       creditScore: [defaultCreditScore],
       bankAccount: [defaultBankAccount],
+      hasPin: false,
     };
 
     // Insert user into database
