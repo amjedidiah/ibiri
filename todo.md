@@ -17,3 +17,5 @@
 - Make BankAccount a document of its own in MongoDB
 - Fix lint errors
 - RSC to replace RCC
+- Swap any other image formats for `.webp`
+- server actions to replace route handlers
