@@ -5,11 +5,12 @@ Ibiri is an innovative fintech application designed to revolutionize financial i
 ## Table of Contents
 
 - [Project Overview](#project-overview)
-- [Planned Key Features](#planned-key-features)
+- [Key Features](#key-features)
 - [Technology Stack](#technology-stack)
 - [Quick Start](#quick-start)
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
+  - [Test Details](#test-details)
   - [Installation](#installation)
 - [Configuration](#configuration)
 - [Project Structure](#project-structure)
@@ -21,7 +22,6 @@ Ibiri is an innovative fintech application designed to revolutionize financial i
 - [Security](#security)
 <!-- - [Contributing](#contributing) -->
 - [Roadmap](#roadmap)
-- [Changelog](#changelog)
 - [License](#license)
 - [Acknowledgments](#acknowledgments)
 - [Contact](#contact)
@@ -41,7 +41,7 @@ Ibiri addresses the critical need for financial inclusion in Africa. According t
 
 Our solution provides millions of unbanked and under-banked Africans with access to formal financial services, stimulates local economies, and fosters economic growth across the continent.
 
-## Planned Key Features
+## Key Features
 
 - [ ] Dynamic Credit Scoring
 - [ ] Offline Transactions
@@ -56,14 +56,16 @@ Our solution provides millions of unbanked and under-banked Africans with access
 
 This Nx monorepo project will use the following technologies:
 
-- [ ] **Monorepo Management**: Nx
-- [ ] **Frontend (Web)**: Next.js
+- [x] **Monorepo Management**: Nx
+- [x] **FullStack (Web)**: Next.js
 - [ ] **Mobile**: React Native
-- [ ] **Backend**: Node.js
-- [ ] **Database**: MongoDB
-- [ ] **API**: RESTful API and GraphQL
-- [ ] **Authentication**: JWT
-- [ ] **Payment Integration**: Paystack
+- [ ] **Mobile Backend**: Node.js
+- [x] **Database**: MongoDB
+- [x] **API**: RESTful API
+~~- [ ] **Authentication**: Next-auth~~
+- [x] **Authentication**: JWT
+~~- [ ] **Payment Integration**: Paystack~~
+- [x] **Payment Integration**: KoraPay
 - [ ] **Offline Capabilities**: PWA, Local Storage
 - [ ] **AI/ML**: TensorFlow.js
 - [ ] **Blockchain**: Ethereum (Smart Contracts)
@@ -75,23 +77,24 @@ For experienced developers, here's how to get Ibiri running quickly:
 ```bash
 git clone https://github.com/amjedidiah/ibiri.git
 cd ibiri
-yarn install
+npm install
 cp .env.example .env
 # Edit .env with your configuration
-nx dev web
-nx run mobile:start
-nx serve api
+npm run web:dev
+# npm run mobile:dev   // Mobile is not yet available
+# npm run api:dev      // Mobile api is not yet available
 ```
 
 ## Getting Started
 
 ### Prerequisites
 
-- Node.js (v14.0.0 or later)
-- yarn (v1.0.0 or later)
-- MongoDB (v4.0 or later)
-- Nx CLI (`npm install -g nx`)
-- React Native development environment set up
+- Node.js (v18.19.1)
+<!-- - React Native development environment set up -->
+
+### Test Details
+
+> No test details are required to use the app running at <https://ibiri.vercel.app>
 
 ### Installation
 
@@ -105,7 +108,7 @@ nx serve api
 2. Install dependencies:
 
    ```bash
-   yarn install
+   npm install
    ```
 
 3. Set up environment variables:
@@ -120,9 +123,11 @@ nx serve api
 
 Ibiri uses environment variables for configuration. Key variables will include:
 
-- `DATABASE_URL`: MongoDB connection string
+- `MONGODB_URI`: MongoDB connection string
+- `MONGODB_DB_NAME`: MongoDB name
 - `JWT_SECRET`: Secret key for JWT authentication
-- `PAYSTACK_API_KEY`: API key for Paystack integration
+~~- `PAYSTACK_API_KEY`: API key for Paystack integration~~
+- `KORA_SECRET_KEY`: API key for KoraPay integration
 <!-- - `MPESA_API_KEY`: API key for M-Pesa integration -->
 
 Refer to `.env.example` for a complete list of required environment variables.
@@ -139,72 +144,43 @@ ibiri/
 │   ├── mobile/               # React Native mobile app
 │   └── api/                  # Node.js backend API
 │
-├── libs/
-│   ├── shared/               # Shared utilities and components
-│   ├── credit-scoring/       # Credit scoring module
-│   ├── offline-transactions/ # Offline transaction handling
-│   └── blockchain/           # Blockchain integration
+├── shared/
+│   ├── components/           # Shared components
+│   ├── lib/                  # Shared utilities and libs
+│   ├── db/                   # Shared db config
 │
-├── tools/                    # Scripts and tools for development
-├── CHANGELOG.md              # Changelog
 ├── LICENSE                   # License
 ├── nx.json                   # Nx configuration
-├── workspace.json            # Nx workspace configuration
 ├── package.json              # Root package.json
 └── README.md                 # This file
 ```
 
 ## Development
 
-To start the development servers:
-
-1. For the web application:
-
-   ```bash
-   nx dev web
-   ```
-
-2. For the mobile application:
-
-   ```bash
-   nx run mobile:start
-   ```
-
-3. For the backend API:
-
-   ```bash
-   nx serve api
-   ```
-
 To generate a new library or application:
 
 ```bash
-nx g @nrwl/react:lib my-lib
-nx g @nrwl/next:app my-app
+npx nx g @nrwl/react:lib my-lib
+npx nx g @nrwl/next:app my-app
 ```
 
-We use ESLint for code linting and Prettier for code formatting. Run linting with:
+We use ESLint for code linting and Prettier for code formatting. This linting and formatting is run before every commit using husky. To setup husky run the following commands:
 
 ```bash
-nx lint
-```
-
-And format code with:
-
-```bash
-nx format:write
+npx husky
 ```
 
 ## Architecture
 
 Ibiri will follow a microservices architecture:
 
-1. Web and Mobile frontends communicate with the backend API.
-2. The API server handles requests and communicates with various microservices.
-3. Microservices will include: Credit Scoring, Offline Transactions, and Blockchain Integration.
-4. All services will share a common database but have separate schemas.
+1. A FullStack Web frontend.
+2. Mobile frontend communicate with the backend API.
+3. The API server and FullStack BE handles requests and communicates with various microservices.
+4. Microservices will include: Credit Scoring, Offline Transactions, and Blockchain Integration.
+5. All services will share a common database but have separate schemas.
 
-[Include a system architecture diagram here]
+<!-- [Include a system architecture diagram here] -->
 
 <!-- ## Testing
 
@@ -230,11 +206,9 @@ Deployment commands for each application:
 
 1. Deploy the web application:
 
-   ```bash
-   nx deploy web
-   ```
+   The web application is automatically deployed to Vercel from the default repo branch
 
-2. Deploy the mobile application:
+<!-- 2. Deploy the mobile application:
 
    ```bash
    nx deploy mobile
@@ -244,7 +218,7 @@ Deployment commands for each application:
 
    ```bash
    nx deploy api
-   ```
+   ``` -->
 
 <!-- We use GitHub Actions for CI/CD. Refer to `.github/workflows` for our pipeline configuration. -->
 
@@ -253,12 +227,10 @@ Deployment commands for each application:
 Common issues and solutions:
 
 1. **Issue**: Unable to connect to MongoDB
-   **Solution**: Ensure MongoDB is running and the `DATABASE_URL` in `.env` is correct.
+   **Solution**: Ensure MongoDB is running and the `MONGODB_URI` in `.env` is correct.
 
-2. **Issue**: Mobile app not connecting to API
-   **Solution**: Check that the API URL in the mobile app configuration matches your local or deployed API.
-
-<!-- For more issues, please or open an issue on GitHub. -->
+<!-- 2. **Issue**: Mobile app not connecting to API
+   **Solution**: Check that the API URL in the mobile app configuration matches your local or deployed API. -->
 
 ## Security
 
@@ -282,10 +254,6 @@ Future plans for Ibiri include:
 - Expansion to francophone African countries
 - Development of a merchant platform
 
-## Changelog
-
-See [CHANGELOG.md](CHANGELOG.md) for a detailed history of changes to Ibiri.
-
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
@@ -294,7 +262,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - [Nx](https://nx.dev/) for excellent monorepo tooling
 - [Next.js](https://nextjs.org/) for powering our web frontend
-- [React Native](https://reactnative.dev/) for enabling cross-platform mobile development
+<!-- - [React Native](https://reactnative.dev/) for enabling cross-platform mobile development -->
 - The open-source community for the countless libraries and tools that make this project possible
 
 ## Contact
