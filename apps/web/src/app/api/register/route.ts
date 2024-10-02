@@ -13,6 +13,7 @@ import jwt from 'jsonwebtoken';
 // Create default credit score
 const defaultCreditScore: CreditScore = {
   score: 300,
+  lastScore: 300,
   date: new Date(),
   range: { min: 300, max: 850 },
   factors: [],
@@ -94,7 +95,7 @@ export async function POST(request: NextRequest) {
       accountNumber: accountNumber,
       name: `${firstName} ${lastName}`,
       type: 'checking',
-      balance: 0,
+      balance: 500000,
     };
 
     // Create user object
@@ -123,6 +124,7 @@ export async function POST(request: NextRequest) {
       updatedAt: newUser.updatedAt,
       creditScore: newUser.creditScore,
       bankAccount: newUser.bankAccount,
+      hasPin: false,
     };
 
     const jwtSecret = process.env.JWT_SECRET;

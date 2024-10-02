@@ -9,6 +9,7 @@ export interface BankAccount {
 
 export interface CreditScore {
   score: number;
+  lastScore: number;
   date: Date;
   range: {
     min: 300;

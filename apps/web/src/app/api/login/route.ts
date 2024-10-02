@@ -44,6 +44,8 @@ export async function POST(request: NextRequest) {
             lastName: user.lastName,
             creditScore: user.creditScore,
             bankAccount: user.bankAccount,
+            hasPin: user.hasPin,
+            pin: user.pin,
           },
         },
         { status: 200 }
